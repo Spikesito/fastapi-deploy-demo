@@ -1,12 +1,12 @@
 from fastapi import FastAPI
-from src.auth.auth_routes import auth_router
+from src.routes.bikes import bikes_router
+from src.routes.messages import messages_router
+from src.routes.users import users_router
+from src.routes.rides import rides_router
 from src.config import Settings
 from contextlib import asynccontextmanager
 from src.config import settings
 from src.db import init_db
-
-
-
 
 # lifespan code
 
@@ -18,12 +18,15 @@ async def lifespan(app:FastAPI):
 
 def create_app():
     app = FastAPI(
-        description="This is a simple REST API for a book review service",
-        title="Bookly",
+        description="A REST API for managing bike rides, users, and messages.",
+        title="On Wheels API",
         version=settings.VERSION,
         lifespan=lifespan
     )
-    app.include_router(auth_router)
+    app.include_router(bikes_router)
+    app.include_router(messages_router)
+    app.include_router(rides_router)
+    app.include_router(users_router)
 
     return app
 
